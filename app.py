@@ -74,12 +74,16 @@ class Extract(Resource):
         video_url = msg.get('video_url', '')
         # print(video_url)
         file = download_file(video_url)
-        extract_file(file, file + '.csv')
-        # print('file download done', file)
         if os.path.exists(file):
-            print('file download', 'ok', video_url)
+            print('file download', 'ok', file)
         else:
-            print('file download', 'failed', video_url)
+            print('file download', 'failed', file)
+        file_csv = os.path.basename(file) + '.csv'
+        extract_file(file, file_csv)
+        if os.path.exists(file_csv):
+            print('file download', 'ok', file_csv)
+        else:
+            print('file download', 'failed', file_csv)
         
 
 if __name__ == '__main__':

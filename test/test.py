@@ -14,8 +14,8 @@ class UT():
             print('file rm:', self.file)
         from subprocess import call
         wget = ["wget", "-O", self.file, self.url + '/download/' + self.file]
-        curl = ["curl", "-o", self.file, self.url + '/download/' + self.file]
-        call(curl)
+        # curl = ["curl", "-o", self.file, self.url + '/download/' + self.file]
+        call(wget)
         if os.path.exists(self.file):
             print('file download', self.file)
         else:

@@ -15,6 +15,7 @@ DOWNLOAD_FOLDER = './download_files'
 ALLOWED_EXTENSIONS = set(['mp4', 'avi', 'wmv', 'png'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['DOWNLOAD_FOLDER'] = DOWNLOAD_FOLDER
+app.config['FEATURE_EXTRATION'] = os.path.join(app.root_path, "./bin/FeatureExtraction")
 
 upload_parser = api.parser()
 upload_parser.add_argument('file', location='files', type=FileStorage, required=True)
@@ -59,6 +60,12 @@ def download_file(url):
     curl = ["curl", "-o", local_filename, url]
     call(wget)
     return local_filename
+def extract_file(in_file, out_file):
+    openface = [ app.config['FEATURE_EXTRATION'], "-q", "-f", in_file, "-outroot", os.path.join(app.root_path, 'test'), "-of", os.path.basename(out_file)]
+    print(app.config['FEATURE_EXTRATION'], out_file)
+    if os.path.exists(out_file):
+        os.remove(out_file)
+    call(openface)
 
 @api.route('/extract')
 class Extract(Resource):
@@ -67,6 +74,7 @@ class Extract(Resource):
         video_url = msg.get('video_url', '')
         # print(video_url)
         file = download_file(video_url)
+        extract_file(file, file + '.csv')
         # print('file download done', file)
         if os.path.exists(file):
             print('file download', 'ok', video_url)

@@ -6,7 +6,7 @@ class UT():
     def __init__(self, url):
         self.url = url
         # self.file = 'haha.png'
-        self.file = 'default.wmv'
+        self.file = 'test_3.mp4'
     def test_download(self):
         if os.path.exists(self.file):
             print('file found:', self.file)
@@ -37,16 +37,12 @@ class UT():
         data['video_url'] = 'http://localhost:8000' + '/download/' + self.file
         print(data)
         headers = {'Content-Type': 'application/json'}
-        res = requests.post(self.url + '/extract', data=json.dumps(data), headers=headers)
-        if res and res.status_code == 200:
-            print('extract ok', res.status_code)
-        else:
-            print('extract failed', res.status_code)
+        res = requests.post(self.url + '/feature_extract', data=json.dumps(data), headers=headers)
+        print(res.json)
 
 if __name__ == "__main__":
     t = UT('http://localhost:8000')
     t.test_upload()
-    t.test_download()
-    t_2 = UT('http://localhost:9000')
+    t_2 = UT('http://localhost:9000/rest')
     t_2.test_extract()
 
